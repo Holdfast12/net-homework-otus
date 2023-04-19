@@ -7,7 +7,27 @@ MACHINES = {
 :inetRouter => {
         :box_name => "centos/7",
         #:public => {:ip => '10.10.10.1', :adapter => 1},
-        :net => [ip: '192.168.255.1', netmask: "255.255.255.252", virtualbox__intnet: "router-net"],
+        :net => [
+                   {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                ]
+  },
+  :centralRouter => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                   {ip: '192.168.0.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net"},
+                   {ip: '192.168.0.33', adapter: 4, netmask: "255.255.255.240", virtualbox__intnet: "hw-net"},
+                   {ip: '192.168.0.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net"},
+                ]
+  },
+  
+  :centralServer => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.0.2', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "dir-net"},
+                   {adapter: 3, auto_config: false, virtualbox__intnet: true},
+                   {adapter: 4, auto_config: false, virtualbox__intnet: true},
+                ]
   },
   
 }
@@ -20,11 +40,11 @@ Vagrant.configure("2") do |config|
 
         box.vm.box = boxconfig[:box_name]
         box.vm.host_name = boxname.to_s
-        box.vm.post_upmessage = 123
 
-        #box.vm.network "private_network", boxconfig[:net]
+        boxconfig[:net].each do |ipconf|
+          box.vm.network "private_network", ipconf
+        end
         
-
         if boxconfig.key?(:public)
           box.vm.network "public_network", boxconfig[:public]
         end
