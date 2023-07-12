@@ -1,25 +1,16 @@
-- name: set up route on office1Server
+- name: set up route on centralRouter eth5
   template:
-    src: office1Server_route_eth1.j2
-    dest: /etc/sysconfig/network-scripts/route-eth1
+    src: centralRouter_route_eth5.j2
+    dest: /etc/sysconfig/network-scripts/route-eth5
     owner: root
     group: root
     mode: 0644
-  when: (ansible_hostname == "office1Server")
-    
-- name: set up route on office2Server
-  template:
-    src: office2Server_route_eth1.j2
-    dest: /etc/sysconfig/network-scripts/route-eth1
-    owner: root
-    group: root
-    mode: 0644
-  when: (ansible_hostname == "office2Server")
+  when: (ansible_hostname == "centralRouter")
 
-- name: set up route on centralRouter eth1
+- name: set up route on centralRouter eth6
   template:
-    src: centralRouter_route_eth1.j2
-    dest: /etc/sysconfig/network-scripts/route-eth1
+    src: centralRouter_route_eth6.j2
+    dest: /etc/sysconfig/network-scripts/route-eth6
     owner: root
     group: root
     mode: 0644
@@ -33,6 +24,15 @@
     group: root
     mode: 0644
   when: (ansible_hostname == "office1Router")
+
+- name: set up route on office2Router eth1
+  template:
+    src: office2Router_route_eth1.j2
+    dest: /etc/sysconfig/network-scripts/route-eth1
+    owner: root
+    group: root
+    mode: 0644
+  when: (ansible_hostname == "office2Router")
 
 - name: set up route on inetRouter
   template:

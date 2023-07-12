@@ -50,6 +50,18 @@
     line: GATEWAY=192.168.255.1
   when: (ansible_hostname == "centralRouter")
 
+- name: add default gateway for office1Router
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: GATEWAY=192.168.255.9
+  when: (ansible_hostname == "office1Router")
+
+- name: add default gateway for office2Router
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: GATEWAY=192.168.255.5
+  when: (ansible_hostname == "office2Router")
+
 # echo "GATEWAY=192.168.0.1" >> /etc/sysconfig/network-scripts/ifcfg-eth1
 - name: add default gateway for centralServer
   lineinfile:
@@ -57,8 +69,14 @@
     line: GATEWAY=192.168.0.1
   when: (ansible_hostname == "centralServer")
 
-- name: add default gateway for office1Router
+- name: add default gateway for office1Server
   lineinfile:
     dest: /etc/sysconfig/network-scripts/ifcfg-eth1
-    line: GATEWAY=192.168.255.9
-  when: (ansible_hostname == "office1Router")
+    line: GATEWAY=192.168.2.129
+  when: (ansible_hostname == "office1Server")
+
+- name: add default gateway for office2Server
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: GATEWAY=192.168.1.1
+  when: (ansible_hostname == "office2Server")
