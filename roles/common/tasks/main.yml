@@ -1,0 +1,6 @@
+- name: install traceroute
+  yum:
+    name:
+    - traceroute
+    - tcpdump
+    state: latest
